@@ -19,3 +19,5 @@
 15:36:46.417 [main] INFO  db - complexThing=Some(ComplexThing(and a one,22,Blarg(Blarg,99),Some(1)))
 15:37:18.802 [main] INFO  db - simpleThing=Some(SimpleThing(x@y.com,blah,blah,doodley-doo!,Some(1)))
 15:37:20.074 [main] INFO  db - complexThing=Some(ComplexThing(and a one,22,Blarg(Blarg,99),Some(1)))
+16:17:43.568 [main] INFO  db - simpleThing=Some(SimpleThing(x@y.com,blah,blah,doodley-doo!,Some(1)))
+16:17:45.142 [main] INFO  db - complexThing=Some(ComplexThing(and a one,22,Blarg(Blarg,99),Some(1)))

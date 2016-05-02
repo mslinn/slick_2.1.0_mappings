@@ -1,6 +1,6 @@
 import slick.driver.PostgresDriver.simple._
 
-class ComplexThings(tag: Tag) extends Table[ComplexThing](tag, "complex_thing") {
+class _ComplexThings(tag: Tag) extends Table[ComplexThing](tag, "complex_thing") {
   def one = column[String]("one")
   def two = column[Int]("two")
   def id  = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
@@ -21,7 +21,7 @@ class ComplexThings(tag: Tag) extends Table[ComplexThing](tag, "complex_thing") 
   def * = (one, two, blarg, id) <> (ComplexThing.tupled, ComplexThing.unapply)
 }
 
-object complexThings extends TableQuery(new ComplexThings(_)) {
+object ComplexThings extends TableQuery(new _ComplexThings(_)) {
   import DB._
 
   implicit val session = db.createSession
@@ -35,7 +35,7 @@ object complexThings extends TableQuery(new ComplexThings(_)) {
   def findById(id: Option[Long]): Option[ComplexThing] =
     this.filter(_.id === id).firstOption
 
-  protected def queryById(id: Long): Query[ComplexThings, ComplexThing, Seq] = filter(_.id === id)
+  protected def queryById(id: Long): Query[_ComplexThings, ComplexThing, Seq] = filter(_.id === id)
 
   def findById(id: Long): Option[ComplexThing] = queryById(id).firstOption
 

@@ -19,16 +19,16 @@ object DB {
 object app extends App {
   import DB.Logger
 
-  simpleThings.createTable()
-  val simpleThingId: Int = simpleThings.insert(SimpleThing("x@y.com", "blah", "blah", InnerDoodle("doodley-doo!")))
-  val simpleThing: Option[SimpleThing] = simpleThings.findById(simpleThingId)
+  SimpleThings.createTable()
+  val simpleThingId: Int = SimpleThings.insert(SimpleThing("x@y.com", "blah", "blah", InnerDoodle("doodley-doo!")))
+  val simpleThing: Option[SimpleThing] = SimpleThings.findById(simpleThingId)
   Logger.info(s"simpleThing=$simpleThing")
 
-  complexThings.createTable()
-  val complexThingId: Int = complexThings.insert(ComplexThing("and a one", 22, Blarg("Blarg", 99)))
-  val complexThing: Option[ComplexThing] = complexThings.findById(complexThingId)
+  ComplexThings.createTable()
+  val complexThingId: Int = ComplexThings.insert(ComplexThing("and a one", 22, Blarg("Blarg", 99)))
+  val complexThing: Option[ComplexThing] = ComplexThings.findById(complexThingId)
   Logger.info(s"complexThing=$complexThing")
 
-  simpleThings.deleteTable()
-  complexThings.deleteTable()
+  SimpleThings.deleteTable()
+  ComplexThings.deleteTable()
 }
