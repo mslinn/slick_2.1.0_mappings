@@ -5,7 +5,7 @@ class ComplexThings(tag: Tag) extends Table[ComplexThing](tag, "complex_thing") 
   def two = column[Int]("two")
   def id  = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
 
-  // blarg fields
+  // Blarg fields
   def x   = column[String]("x")
   def y   = column[Int]("y")
 
