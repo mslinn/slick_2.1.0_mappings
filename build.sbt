@@ -24,7 +24,7 @@ resolvers ++= Seq(
 
 libraryDependencies ++= Seq(
   "com.typesafe.slick"   %% "slick"             % "2.1.0" withSources(),
-  "org.slf4j"            %  "slf4j-nop"         % "1.6.4",
+  "ch.qos.logback"       %  "logback-classic"   % "1.1.7" withSources(),
   "org.postgresql"       %  "postgresql"        % "9.4.1208.jre7" withSources(),
   //"org.joda"             %  "joda-convert"      % "1.6" withSources(),
   //"com.github.tototoshi" %% "slick-joda-mapper" % "1.2.0" withSources(),
