@@ -1,6 +1,6 @@
 import slick.lifted.MappedTo
 
-case class OAuthProvider(
+case class SimpleThing(
   email: String,
   provider: String,
   userId: String,

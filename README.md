@@ -1,10 +1,6 @@
-# Slick 2.1.0 Problem #
+# Slick 2.1.0 Type Mapping Adventures #
 
-This project illustrates the issue described in
-[Slick 2.1.0: No matching Shape found for mapped type](http://stackoverflow.com/questions/36976156/slick-2-1-0-no-matching-shape-found-for-mapped-type)
-on StackOverflow.
-
-I compiles now!
+This project illustrates the issue described in [Slick 2.1.0: No matching Shape found for mapped type](http://stackoverflow.com/a/28408343) on StackOverflow.
 
 I found some information in [activator-hello-slick](https://github.com/typesafehub/activator-hello-slick/blob/slick-2.1).
 Unfortunately the example deals in tuples, not instances of the persisted classes.
