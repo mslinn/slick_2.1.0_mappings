@@ -1,11 +1,11 @@
 import slick.driver.PostgresDriver.simple._
 
 class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider") {
-  def email    : Column[String] = column[String]("email")
-  def provider : Column[String] = column[String]("provider")
-  def userId   : Column[String] = column[String]("userid")
-  def doodle   : Column[InnerDoodle]  = column[InnerDoodle]("doodle")
-  def id       : Column[Option[Long]] = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
+  def email    = column[String]("email")
+  def provider = column[String]("provider")
+  def userId   = column[String]("userid")
+  def doodle   = column[InnerDoodle]("doodle")
+  def id       = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
 
   private type OAuthProviderTupleType = (String, String, String, InnerDoodle, Option[Long])
 
