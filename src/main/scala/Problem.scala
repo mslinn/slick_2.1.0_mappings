@@ -1,5 +1,5 @@
 import slick.driver.PostgresDriver.simple._
-import slick.lifted.{Column, ProvenShape}
+import slick.lifted.ProvenShape
 
 case class OAuthProvider(
   email: String,
@@ -18,21 +18,37 @@ class OAuthProviders(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider"
 }
 
 object oAuthProviders extends TableQuery(new OAuthProviders(_)) {
+  val Logger = org.slf4j.LoggerFactory.getLogger("db")
   val db = Database.forURL("jdbc:postgresql:localhost:5432/slinnbooks", driver = "org.postgresql.Driver")
   implicit val session = db.createSession
-
-  val Logger = org.slf4j.LoggerFactory.getLogger("db")
 
   def createTable(): Unit = this.ddl.create
 
   def apply(email: String, provider: String, userId: String, id: Option[Long]=None) =
     OAuthProvider(email, provider, userId, id)
 
-  def findByUserId(userId: Long): Option[OAuthProvider] =
-    this.filter(p => p.provider === userId && p.userId === userId).firstOption
+  def findByUserId(userId: String): Option[OAuthProvider] =
+    this.filter(p => p.userId === userId).firstOption
 
   protected def queryById(id: Long): Query[OAuthProviders, OAuthProvider, Seq] = filter(_.id === id)
 
   def findById(id: Long): Option[OAuthProvider] = queryById(id).firstOption
+
+  def insert(oauthProvider: OAuthProvider): Int = {
+    oAuthProviders += OAuthProvider("x@y.com", "blah", "blah")
+  }
 }
 
+object app extends App {
+  import oAuthProviders.Logger
+
+  oAuthProviders.createTable()
+  val id: Int = oAuthProviders.insert(OAuthProvider("x@y.com", "blah", "blah"))
+  oAuthProviders.findById(id).map { oAuthProvider =>
+    Logger.info(s"Found $oAuthProvider")
+    oAuthProvider
+  }.orElse {
+    Logger.info("Did not find the OAuthProvider")
+    None
+  }
+}
