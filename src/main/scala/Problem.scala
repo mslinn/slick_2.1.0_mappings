@@ -1,23 +1,38 @@
 import slick.driver.PostgresDriver.simple._
-import slick.lifted.ProvenShape
 
-case class OAuthProvider(
-  email: String,
-  provider: String,
-  userId: String,
-  id: Option[Long]=None
-)
+class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider") {
+  def email    : Column[String] = column[String]("email")
+  def provider : Column[String] = column[String]("provider")
+  def userId   : Column[String] = column[String]("userid")
+  def id       : Column[Option[Long]] = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
 
-class OAuthProviders(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider") {
-  def email    = column[String]("email")
-  def provider = column[String]("provider")
-  def userId   = column[String]("userid")
-  def id       = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
+  private type OAuthProviderTupleType = (String, String, String, Option[Long])
 
-  def * : ProvenShape[(String, String, String, Option[Long])] = (email, provider, userId, id)
+  private val oauthProviderShapedValue = (
+    email, provider, userId, id
+  ).shaped[OAuthProvider]
+
+  private val toModel: OAuthProviderTupleType => OAuthProvider = { tuple =>
+    OAuthProvider(
+      email    = tuple._1,
+      provider = tuple._2,
+      userId   = tuple._3,
+      id       = tuple._4
+  )}
+
+  private val toTuple: OAuthProvider => Option[OAuthProviderTupleType] = { oap =>
+    Some((
+      oap.email,
+      oap.provider,
+      oap.userId,
+      oap.id
+    ))
+  }
+
+  def * = oauthProviderShapedValue <> (toModel, toTuple)
 }
 
-object oAuthProviders extends TableQuery(new OAuthProviders(_)) {
+object oAuthProviders1 extends TableQuery(new OAuthProviders1(_)) {
   val Logger = org.slf4j.LoggerFactory.getLogger("db")
   val db = Database.forURL("jdbc:postgresql:localhost:5432/slinnbooks", driver = "org.postgresql.Driver")
   implicit val session = db.createSession
@@ -30,21 +45,21 @@ object oAuthProviders extends TableQuery(new OAuthProviders(_)) {
   def findByUserId(userId: String): Option[OAuthProvider] =
     this.filter(p => p.userId === userId).firstOption
 
-  protected def queryById(id: Long): Query[OAuthProviders, OAuthProvider, Seq] = filter(_.id === id)
+  protected def queryById(id: Long): Query[OAuthProviders1, OAuthProvider, Seq] = filter(_.id === id)
 
   def findById(id: Long): Option[OAuthProvider] = queryById(id).firstOption
 
   def insert(oauthProvider: OAuthProvider): Int = {
-    oAuthProviders += OAuthProvider("x@y.com", "blah", "blah")
+    oAuthProviders1 += OAuthProvider("x@y.com", "blah", "blah")
   }
 }
 
-object app extends App {
-  import oAuthProviders.Logger
+object app1 extends App {
+  import oAuthProviders1.Logger
 
-  oAuthProviders.createTable()
-  val id: Int = oAuthProviders.insert(OAuthProvider("x@y.com", "blah", "blah"))
-  oAuthProviders.findById(id).map { oAuthProvider =>
+  oAuthProviders1.createTable()
+  val id: Int = oAuthProviders1.insert(OAuthProvider("x@y.com", "blah", "blah"))
+  oAuthProviders1.findById(id).map { oAuthProvider =>
     Logger.info(s"Found $oAuthProvider")
     oAuthProvider
   }.orElse {
