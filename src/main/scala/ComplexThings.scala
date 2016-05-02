@@ -9,6 +9,7 @@ class ComplexThings(tag: Tag) extends Table[ComplexThing](tag, "complex_thing") 
   def x   = column[String]("x")
   def y   = column[Int]("y")
 
+  // Blarg sub-projection mappings
   def blarg = (x, y).<>[Blarg, (String, Int)](
     { case (x, y) => Blarg(x, y) },
     { case blarg: Blarg => Some(blarg.x, blarg.y) }
