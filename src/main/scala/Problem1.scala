@@ -1,4 +1,3 @@
-import scala.slick.lifted.ShapedValue
 import slick.driver.PostgresDriver.simple._
 
 class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider") {
