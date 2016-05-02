@@ -1,3 +1,4 @@
+import scala.slick.lifted.ShapedValue
 import slick.driver.PostgresDriver.simple._
 
 class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider") {
@@ -7,10 +8,6 @@ class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider
   def id       : Column[Option[Long]] = column[Option[Long]]("id", O.PrimaryKey, O.AutoInc)
 
   private type OAuthProviderTupleType = (String, String, String, Option[Long])
-
-  private val oauthProviderShapedValue = (
-    email, provider, userId, id
-  ).shaped[OAuthProvider]
 
   private val toModel: OAuthProviderTupleType => OAuthProvider = { tuple =>
     OAuthProvider(
@@ -29,7 +26,9 @@ class OAuthProviders1(tag: Tag) extends Table[OAuthProvider](tag, "oauthProvider
     ))
   }
 
-  def * = oauthProviderShapedValue <> (toModel, toTuple)
+  def * = (
+    email, provider, userId, id
+  ) <> (toModel, toTuple)
 }
 
 object oAuthProviders1 extends TableQuery(new OAuthProviders1(_)) {
