@@ -5,7 +5,7 @@ case class Blarg(
 
 case class ComplexThing(
   one: String,
-  two: Int,
+  maybeInt: Option[Int],
   blarg: Blarg,
   id: Option[Long] = None
 )
