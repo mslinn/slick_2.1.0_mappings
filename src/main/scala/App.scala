@@ -21,8 +21,12 @@ object DB {
 object app extends App {
   import DB.Logger
 
-  try { SimpleThings.deleteTable()  } catch { case _: Exception => }
-  try { ComplexThings.deleteTable() } catch { case _: Exception => }
+  try {          SimpleThings.deleteTable()  } catch { case _: Exception => }
+  try {         ComplexThings.deleteTable() } catch { case _: Exception => }
+  try { OptionalComplexThings.deleteTable() } catch { case _: Exception => }
+
+  val blarg0 = Blarg("Blarg", 0)
+  val blarg42 = Blarg("Blarg", 42)
 
   SimpleThings.createTable()
   val simpleThingId: Int = SimpleThings.insert(SimpleThing("x@y.com", "blah", "blah", InnerDoodle("doodley-doo!")))
@@ -32,8 +36,8 @@ object app extends App {
   Logger.info("")
 
   ComplexThings.createTable()
-  val complexThingId1: Int = ComplexThings.insert(ComplexThing("Stores null in maybe_int column", None, Blarg("Blarg", 0))) //
-  val complexThingId2: Int = ComplexThings.insert(ComplexThing("Stores 42 in maybe_int column", Some(42), Blarg("Blarg", 42)))
+  val complexThingId1: Int = ComplexThings.insert(ComplexThing("Stores null in maybe_int column", None, blarg0))
+  val complexThingId2: Int = ComplexThings.insert(ComplexThing("Stores 42 in maybe_int column", Some(42), blarg42))
   DB.db.withSession { implicit session =>
     import slick.jdbc.{StaticQuery => Q}
     Q.updateNA(s"""insert into complex_thing (one, x, y) values ('Stores null in maybe_int column', 'x', 1);""").execute
@@ -49,6 +53,13 @@ object app extends App {
   Logger.info(s"ComplexThings.findByMaybeInt2(0) should not return results " + ComplexThings.findByMaybeInt2(0).mkString(", "))
   Logger.info(s"ComplexThings.findById($complexThingId2)=${ ComplexThings.findById(complexThingId2) }")
 
+
+  OptionalComplexThings.createTable()
+  val optionalComplexThingId1: Int = OptionalComplexThings.insert(OptionalComplexThing("blarg0", None, None))
+  val optionalComplexThingId2: Int = OptionalComplexThings.insert(OptionalComplexThing("blarg42", Some(42), Some(blarg42)))
+
+
   SimpleThings.deleteTable()
   ComplexThings.deleteTable()
+  OptionalComplexThings.deleteTable()
 }
